@@ -14,6 +14,7 @@ class Line extends Component {
       style,
       trailColor,
       trailWidth,
+      vertical,
       ...restProps,
     } = this.props;
 
@@ -26,11 +27,14 @@ class Line extends Component {
     };
 
     const center = strokeWidth / 2;
-    const right = 100 - (strokeWidth / 2);
-    const pathString =
-          `M ${strokeLinecap === 'round' ? center : 0},${center}
-           L ${strokeLinecap === 'round' ? right : 100},${center}`;
-    const viewBoxString = `0 0 100 ${strokeWidth}`;
+    const target = 100 - (strokeWidth / 2);
+    const L = vertical
+      ? `L ${strokeLinecap === 'round' ? target : 100},${center}`
+      : `L ${center}, ${strokeLinecap === 'round' ? target : 100}`;
+    const pathString = `M ${strokeLinecap === 'round' ? center : 0},${center} ${L}`;
+    const viewBoxString = vertical
+      ? `0 0 ${strokeWidth} 100`
+      : `0 0 100 ${strokeWidth}`;
 
     return (
       <svg
